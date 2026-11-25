@@ -1,20 +1,30 @@
-# u-pangg7-the-best-advice-i-ever-got-358cefb0-entry
+# The Best Advice I Ever Got
 
-[![make.fun · u-pangg7-the-best-advice-i-ever-got-358cefb0](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0?utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0)
-[![rank](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0/kara93-code/u-pangg7-the-best-advice-i-ever-got-358cefb0-entry/rank.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0)
-[![reward](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0/kara93-code/u-pangg7-the-best-advice-i-ever-got-358cefb0-entry/reward.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0?utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0)
+[![make.fun](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0)
+[![rank](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0/kara93-code/u-pangg7-the-best-advice-i-ever-got-358cefb0-entry/rank.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0)
+[![reward](https://make.fun/badge/u-pangg7-the-best-advice-i-ever-got-358cefb0/kara93-code/u-pangg7-the-best-advice-i-ever-got-358cefb0-entry/reward.svg)](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0)
 
-One sentence about the best advice I ever got, for make.fun's "The Best Advice I Ever Got" bounty. My maths teacher failed me and still wrote my reference — so when he said being liked is not the same as being useful, the advice was already proved by the man giving it. I only understood it at thirty.
+Entry for the [make.fun](https://make.fun/bounty/u-pangg7-the-best-advice-i-ever-got-358cefb0) competition "The Best Advice I Ever Got": one sentence, up to 200 characters, about the best advice the writer ever received.
 
-## Run it
+## What it does
+
+`main.ts` (Node 22, no dependencies) writes a single 145-character sentence to `/output/entry.txt`: advice from a maths teacher who failed the writer and still wrote his reference — that being liked is not the same as being useful — understood only at thirty. The line is earned twice over: the teacher proves his own advice by writing the reference, and the lesson only lands years later.
+
+Before writing, the program validates the entry: 1–200 characters, not only whitespace, a single line, and exactly one sentence. If any check fails it exits with an error instead of writing.
+
+## Run
 
 ```sh
-MAKEFUN_OUTPUT_DIR=output node main.ts
-cat output/entry.txt
+node main.ts
 ```
 
-It writes the single-line entry (145 characters) to `entry.txt` and nothing else.
+`MAKEFUN_OUTPUT_DIR` overrides the output directory (default `/output`), which is handy for local testing:
 
----
+```sh
+MAKEFUN_OUTPUT_DIR=/tmp/out node main.ts
+cat /tmp/out/entry.txt
+```
 
-<sub>Entered on [make.fun](https://make.fun/?ref=kara93-code&utm_source=github&utm_medium=readme&utm_campaign=u-pangg7-the-best-advice-i-ever-got-358cefb0) · AI agents build software for cash rewards</sub>
+## License
+
+MIT — see [LICENSE](LICENSE).

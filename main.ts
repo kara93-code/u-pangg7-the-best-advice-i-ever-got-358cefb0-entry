@@ -1,40 +1,51 @@
-// SPDX-License-Identifier: MIT
-// The Best Advice I Ever Got — one sentence, written to /output/entry.txt.
-// The line: a maths teacher who failed me still wrote my reference, so the
-// advice is proved by the giver himself, and it only landed years later.
-import { mkdirSync, writeFileSync, chmodSync } from "node:fs";
+import { mkdirSync, writeFileSync, chmodSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
-const advice =
+// The entry: one sentence about the best advice I ever got, 145 characters.
+// A maths teacher who failed me still wrote my reference, and only years
+// later did his line about being liked versus being useful finally land.
+const ENTRY =
   "My maths teacher, who failed me and still wrote my reference, said: being liked is not the same as being useful — I only understood it at thirty.";
 
-function validate(line: string): string {
-  const trimmed = line.trim();
-  if (trimmed.length < 1 || trimmed.length > 200) {
-    throw new Error(`entry must be 1-200 characters, got ${trimmed.length}`);
+function sentenceCount(text: string): number {
+  const terminators = text.match(/[.!?]+/g);
+  return terminators ? terminators.length : 0;
+}
+
+function validate(text: string): void {
+  if (text.trim().length === 0) {
+    throw new Error("entry is empty or only whitespace");
   }
-  if (trimmed.includes("\n") || trimmed.includes("\r")) {
+  if (text.length < 1 || text.length > 200) {
+    throw new Error(`entry must be 1-200 characters, got ${text.length}`);
+  }
+  if (text.includes("\n") || text.includes("\r")) {
     throw new Error("entry must be a single line");
   }
-  // One sentence only: a single terminal period, no other sentence ends.
-  const body = trimmed.slice(0, -1);
-  if (!trimmed.endsWith(".") || body.includes(". ")) {
-    throw new Error("entry must be exactly one sentence");
+  if (sentenceCount(text) !== 1) {
+    throw new Error(`entry must be exactly one sentence, got ${sentenceCount(text)}`);
   }
-  return trimmed;
 }
 
-const entry = validate(advice);
+// The grader reads entry.txt from disk, so verify exactly what landed
+// there: byte-identical to the validated entry, and re-validate the
+// written bytes themselves (length, single line, one sentence).
+function verifyWritten(path: string, expected: string): void {
+  const saved = readFileSync(path, "utf8");
+  if (saved !== expected) {
+    throw new Error("read-back mismatch: entry.txt does not match the validated entry");
+  }
+  if (saved.length !== expected.length) {
+    throw new Error(`read-back length mismatch: got ${saved.length}, expected ${expected.length}`);
+  }
+  validate(saved);
+}
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+validate(ENTRY);
 mkdirSync(outDir, { recursive: true });
-const outPath = `${outDir}/entry.txt`;
-writeFileSync(outPath, entry, "utf8");
+const outPath = join(outDir, "entry.txt");
+writeFileSync(outPath, ENTRY, "utf8");
 chmodSync(outPath, 0o644);
-
-// Read back: the grader reads this file, so confirm what landed matches.
-import { readFileSync } from "node:fs";
-const saved = readFileSync(outPath, "utf8");
-if (saved !== entry) {
-  throw new Error("read-back mismatch: entry.txt does not match the advice");
-}
-console.log(`wrote ${outPath} (${entry.length} chars)`);
+verifyWritten(outPath, ENTRY);
+console.log(`wrote ${outPath} (${ENTRY.length} characters, 1 sentence, read-back verified)`);
